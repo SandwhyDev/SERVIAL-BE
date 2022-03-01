@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Users{
+  id                            Int           @id @default(autoincrement())
+  email                         String        @unique
+  password                      String
+  createdAt                     DateTime      @default(now())
+  updatedAt                     DateTime      @updatedAt
+}
+
+model Admin{
+  id                            Int           @id @default(autoincrement())
+  username                      String        @unique
+  password                      String
+  createdAt                     DateTime      @default(now())
+  updatedAt                     DateTime      @updatedAt
+}
+
+model Blogs{
+  id                            Int           @id @default(autoincrement())
+  title                         String        @unique
+  body                          String
+  createdAt                     DateTime      @default(now())
+  updatedAt                     DateTime      @updatedAt
+
+  //relasi
+  banner                        BannerBlogs?
+}
+
+model BannerBlogs{
+  id                            Int           @id @default(autoincrement())
+  filename                      String
+  location                      String
+  blog_id                       Int
+  createdAt                     DateTime      @default(now())
+  updatedAt                     DateTime      @updatedAt
+
+  //relasi
+  blog                          Blogs         @relation(fields: [blog_id], references: [id])
+}
+
+model Categories{
+  id                            Int           @id @default(autoincrement())
+  title                         String        @unique
+  createdAt                     DateTime      @default(now())
+  updatedAt                     DateTime      @updatedAt
+
+  //relasi
+  product                       Products[]
+}
+
+model Products{
+  id                            Int           @id @default(autoincrement())
+  title                         String        @unique
+  deskripsi                     String
+  harga                         Int
+  berat                         Int
+  categories_id                  Int
+  createdAt                     DateTime      @default(now())
+  updatedAt                     DateTime      @updatedAt
+
+  //relasi
+  categories                    Categories    @relation(fields: [categories_id], references: [id])
+  photo                         PhotoProducts[]
+}
+
+model PhotoProducts{
+  id                            Int           @id @default(autoincrement())
+  filename                      String
+  location                      String
+  product_id                       Int
+  createdAt                     DateTime      @default(now())
+  updatedAt                     DateTime      @updatedAt
+
+  //relasi
+  products                      Products      @relation(fields: [product_id], references: [id])
+}
