@@ -120,9 +120,11 @@ user_routes.get("/user_logout", async (req, res) => {
 // USER READ
 user_routes.get("/user_read", async (req, res) => {
   try {
+    const countData = await ps.users.count()
     const result = await ps.users.findMany()
     res.status(200).json({
       success: true,
+      total_data: countData,
       query: result,
     })
   } catch (error) {
