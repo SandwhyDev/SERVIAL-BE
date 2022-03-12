@@ -46,31 +46,23 @@ model BannerBlogs{
   updatedAt                     DateTime      @updatedAt
 
   //relasi
-  blog                          Blogs         @relation(fields: [blog_id], references: [id])
+  blog                          Blogs         @relation(fields: [blog_id], references: [id], onDelete: Cascade)
 }
 
-model Categories{
-  id                            Int           @id @default(autoincrement())
-  title                         String        @unique
-  createdAt                     DateTime      @default(now())
-  updatedAt                     DateTime      @updatedAt
-
-  //relasi
-  product                       Products[]
-}
 
 model Products{
   id                            Int           @id @default(autoincrement())
   title                         String        @unique
   deskripsi                     String
   harga                         Int
-  berat                         Int
-  categories_id                  Int
+  berat                         Int?
+  satuan_berat                  String?
+  categories                    String
   createdAt                     DateTime      @default(now())
   updatedAt                     DateTime      @updatedAt
 
   //relasi
-  categories                    Categories    @relation(fields: [categories_id], references: [id])
+
   photo                         PhotoProducts[]
 }
 
@@ -83,5 +75,5 @@ model PhotoProducts{
   updatedAt                     DateTime      @updatedAt
 
   //relasi
-  products                      Products      @relation(fields: [product_id], references: [id])
+  products                      Products      @relation(fields: [product_id], references: [id], onDelete: Cascade)
 }

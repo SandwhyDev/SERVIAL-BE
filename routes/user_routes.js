@@ -9,19 +9,6 @@ const user_routes = express.Router()
 user_routes.post("/user_create", async (req, res) => {
   try {
     const data = await req.body
-    const findUser = await ps.users.findUnique({
-      where: {
-        username: data.username,
-      },
-    })
-
-    if (findUser) {
-      res.status(404).json({
-        success: false,
-        msg: "username sudah digunakan",
-      })
-      return
-    }
 
     const findEmail = await ps.users.findUnique({
       where: {
@@ -39,7 +26,6 @@ user_routes.post("/user_create", async (req, res) => {
 
     const result = await ps.users.create({
       data: {
-        username: data.username,
         email: data.email,
         password: hashPassword(data.password),
       },

@@ -3,11 +3,11 @@ import path from "path"
 
 export const uploadStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, `../static/uploads/product`))
+    cb(null, path.join(__dirname, `../static/uploads/blogs`))
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + file.originalname)
   },
 })
 
-export const uploadProducts = multer({ storage: uploadStorage })
+export const upload_blog = multer({ storage: uploadStorage })
