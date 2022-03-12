@@ -78,6 +78,35 @@ blog_routes.get("/blog_read", async (req, res) => {
   }
 })
 
+// READ UINQUE BLOG
+blog_routes.get("/blog_read/:title", async (req, res) => {
+  try {
+    const result = await ps.blogs.findUnique({
+      where: {
+        title: req.params.title,
+      },
+      include: {
+        banner: {
+          select: {
+            filename: true,
+            location: true,
+          },
+        },
+      },
+    })
+
+    res.status(200).json({
+      success: true,
+      query: result,
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    })
+  }
+})
+
 // DELETE MANY BLOG
 blog_routes.delete("/blogs_delete_many", async (req, res) => {
   try {
