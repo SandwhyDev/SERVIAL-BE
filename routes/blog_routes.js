@@ -35,7 +35,7 @@ blog_routes.post("/blog_create", upload_blog.single("image"), async (req, res) =
       },
     })
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       msg: "berhasil tambah blog",
     })
@@ -52,6 +52,9 @@ blog_routes.get("/blog_read", async (req, res) => {
   try {
     const total_data = await ps.blogs.count()
     const result = await ps.blogs.findMany({
+      orderBy: {
+        id: "desc",
+      },
       include: {
         banner: {
           select: {
