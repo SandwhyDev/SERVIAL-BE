@@ -27,7 +27,7 @@ product_routes.post("/product_create", uploadProducts.single("image"), async (re
       data: {
         title: data.title,
         deskripsi: data.deskripsi,
-        harga: parseFloat(data.harga),
+        harga: parseInt(data.harga),
         berat: parseInt(data.berat),
         satuan_berat: data.satuan_berat,
         categories: data.categories,

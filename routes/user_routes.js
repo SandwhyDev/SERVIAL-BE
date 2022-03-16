@@ -6,6 +6,7 @@ import ps from "../prisma/connection"
 
 const user_routes = express.Router()
 
+// CREATE USER
 user_routes.post("/user_create", async (req, res) => {
   try {
     const data = await req.body
@@ -126,6 +127,41 @@ user_routes.get("/user_read", async (req, res) => {
       success: true,
       total_data: countData,
       query: result,
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    })
+  }
+})
+
+// USER DELETE
+user_routes.delete("/user_delete/:id", async (req, res) => {
+  try {
+    const { id } = await req.params
+    const findId = await ps.users.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    })
+    if (!findId) {
+      res.status(400).json({
+        success: false,
+        msg: "user tidak ditemukan",
+      })
+      return
+    }
+
+    const result = await ps.users.delete({
+      where: {
+        id: parseInt(id),
+      },
+    })
+
+    res.status(201).json({
+      success: true,
+      msg: "berhasil delete user",
     })
   } catch (error) {
     res.status(500).json({
